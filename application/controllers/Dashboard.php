@@ -15,25 +15,59 @@ class Dashboard extends CI_Controller
 
 	public function index()
 	{
+
 		$this->load->model('GlobalModel');
 		$this->GlobalModel->table('paket');
 
 		$data['title'] = 'Dashboard';
 		$data['parent_active'] = 'dashboard';
-		$data['paket'] = ['all' => $this->GlobalModel->filterBy(['tanggal >=' => date('Y-m-d') . ' 00:00:00',		'tanggal <=' => date('Y-m-d') . ' 23:59:59',		'role' => 2])->joins([['table'     => 'user',				'on'        => 'user.username = paket.username',				'position'  => '']])->findAll(),	'per_user' => $this->GlobalModel->select('paket.username, count(paket.username) as discan')->filterBy(['tanggal >=' => date('Y-m-d') . ' 00:00:00',			'tanggal <=' => date('Y-m-d') . ' 23:59:59',			'role' => '2'])->joins([['table'     => 'user',				'on'        => 'user.username = paket.username',				'position'  => '']])->groupBy('paket.username')->findAll()];
+		$data['paket'] = [
+			'all' => $this->GlobalModel->filterBy([
+				'tanggal >=' => date('Y-m-d') . ' 00:00:00',
+				'tanggal <=' => date('Y-m-d') . ' 23:59:59',
+				'role' => 2
+			])
+				->joins([
+					[
+						'table'     => 'user',
+						'on'        => 'user.username = paket.username',
+						'position'  => ''
+					]
+				])
+				->findAll(),
+			'per_user' => $this->GlobalModel->select('paket.username, count(paket.username) as discan')
+				->filterBy([
+					'tanggal >=' => date('Y-m-d') . ' 00:00:00',
+					'tanggal <=' => date('Y-m-d') . ' 23:59:59',
+					'role' => '2'
+				])
+				->joins([
+					[
+						'table'     => 'user',
+						'on'        => 'user.username = paket.username',
+						'position'  => ''
+					]
+				])
+				->groupBy('paket.username')
+				->findAll()
+		];
 
-		$this->db->where("tanggal BETWEEN '" . date('Y-m-d') . ' 00:00:00' . "' AND '" . date('Y-m-d') . ' 23:59:59' . "' AND is_publish = 'Publish'"); //$this->db->where('is_publish', 'Publish');$data['paket']['checked'] = $this->GlobalModel->findAll();
-
+		$this->db->where("tanggal BETWEEN '" . date('Y-m-d') . ' 00:00:00' . "' AND '" . date('Y-m-d') . ' 23:59:59' . "' AND is_publish = 'Publish'");
+		//$this->db->where('is_publish', 'Publish');
+		$data['paket']['checked'] = $this->GlobalModel->findAll();
 		//echo $this->db->last_query();
-
 		$this->db->where("tanggal BETWEEN '" . date('Y-m-d') . ' 00:00:00' . "' AND '" . date('Y-m-d') . ' 23:59:59' . "' AND is_publish = 'Draft'");
 		$data['paket']['not_checked'] = $this->GlobalModel->findAll();
-
-		$data['jam']['mulai'] = $this->db->from('meta')->where('meta_key', 'jam_mulai')->get()->row()->meta_value;
-		$data['jam']['selesai'] = $this->db->from('meta')->where('meta_key', 'jam_selesai')->get()->row()->meta_value;
+		$data['jam']['mulai'] = $this->db->from('meta')
+			->where('meta_key', 'jam_mulai')
+			->get()->row()->meta_value;
+		$data['jam']['selesai'] = $this->db->from('meta')
+			->where('meta_key', 'jam_selesai')
+			->get()->row()->meta_value;
 		//echo $this->db->last_query();
-		$data['users'] = ['online' => $this->db->from('user')->where(['is_online' => 1])->get()->result()];
-
+		$data['users'] = [
+			'online' => $this->db->from('user')->where(['is_online' => 1])->get()->result()
+		];
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/topbar');
 		$this->load->view('templates/sidebar');
@@ -118,30 +152,13 @@ class Dashboard extends CI_Controller
 
 	public function getUserOnline()
 	{
-		$data = $this->db->get_where('user', ['is_online' => 1])->result();
+		$data = $this->db->get_where('user', ['is_online' => 1])->result_array();
 		echo json_encode($data);
 	}
 
 	public function getUserOffline()
 	{
-		$data = $this->db->get_where('user', ['is_online' => 0])->result();
+		$data = $this->db->get_where('user', ['is_online' => 0])->result_array();
 		echo json_encode($data);
 	}
-
-	// public function cek_user_status()
-	// {
-	// 	$menitSekarang = date('i');
-	// 	$user = $this->session->userdata('username');
-
-	// 	$sql = $this->db->query("SELECT MINUTE(last_aktive) FROM user WHERE username = '{$user}'")->result();
-	// 	$menitLastAktifUser = date('i', $sql['last_aktive']) + 1;
-
-	// 	if ($menitSekarang > $menitLastAktifUser) {
-	// 		$this->db->update('user', ['is_online' => 0], ['username' => $user]);
-	// 		$this->session->unset_userdata('username');
-	// 		$this->session->unset_userdata('role');
-	// 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logout</div>');
-	// 		redirect(base_url());
-	// 	}
-	// }
 }

@@ -223,9 +223,6 @@ class Invoice extends CI_Controller
 
 	public function uploads()
 	{
-
-
-		//error_reporting(0);
 		$this->upload->initialize([
 			'upload_path'   =>  'uploads/',
 			'allowed_types' =>  '*',
@@ -233,47 +230,14 @@ class Invoice extends CI_Controller
 			'file_size' => 30000
 		]);
 
-
 		$extractor = new Extractor;
-		$extractor
-			// ->extract($this->input->post('invoice_store'))
-			->upload($this->upload, [
-				'username'      =>  $this->session->userdata('username'),
-				'tanggal'       =>  date('Y-m-d H:i:s'),
-				'gambar'		=>	'',
-				'keterangan'	=>	'is_publish',
-				'stock'			=>	'IN STOCK'
-			]);
-
-
-		// $files = $_FILES['invoice_file'] ?? [];
-		// unset($_FILES['invoice_file']);
-
-		// foreach ($files['name'] ?? [] as $key => $file) {
-		// 	$_FILES['invoice_file'] = [
-		// 		'name' => $files['name'][$key],
-		// 		'full_path' => $files['full_path'][$key],
-		// 		'tmp_name' => $files['tmp_name'][$key],
-		// 		'error' => $files['error'][$key],
-		// 		'size' => $files['size'][$key],
-		// 		'type' => $files['type'][$key],
-		// 	];
-
-		// 	if ($this->upload->do_upload('invoice_file')) {
-		// 		$data = [
-		// 			'username'      =>  $this->session->userdata('username'),
-		// 			'tanggal'       =>  date('Y-m-d H:i:s'),
-		// 			'gambar'		=>	'',
-		// 			'keterangan'	=>	'is_publish',
-		// 			'invoice'		=>	$_FILES['invoice_file']['name'],
-		// 			'no_invoice'	=>	'',
-		// 			'stock'			=>	'IN STOCK'
-		// 		];
-		// 		//var_dump($data['invoice']);
-		// 		// $this->GlobalModel->add($data);
-		// 	}
-		// 	var_dump($this->upload->display_errors());
-		// }
+		$extractor->upload($this->upload, [
+			'username'      =>  $this->session->userdata('username'),
+			'tanggal'       =>  date('Y-m-d H:i:s'),
+			'gambar'		=>	'',
+			'keterangan'	=>	'is_publish',
+			'stock'			=>	'IN STOCK'
+		]);
 	}
 
 	public function extractPdf($invoice_store)
@@ -301,16 +265,41 @@ class Invoice extends CI_Controller
 			$pdfText = nl2br($pdfText);
 			$pdfText = str_replace(" ", "", $pdfText);
 			$pdfTextArr = explode("\n", $pdfText);
-			return $pdfTextArr[0];
+			return $pdfTextArr[2];
 		}
 	}
 
 	public function shopeeExtractPdf()
 	{
+		$parser = new Parser();
+
+		$files = $_FILES['invoice_file'] ?? [];
+
+		for ($i = 0; $i < count($files('name')); $i++) {
+			$pdf = $parser->parseFile($files('tmp_name')[$i]);
+			$pdfText = $pdf->getText();
+			$pdfText = nl2br($pdfText);
+			$pdfText = str_replace(" ", "", $pdfText);
+			$pdfTextArr = explode("\n", $pdfText);
+			return $pdfTextArr[8];
+		}
 	}
 
 	public function lazadaExtractPdf()
 	{
+		$parser = new Parser();
+
+		$files = $_FILES['invoice_file'] ?? [];
+
+		for ($i = 0; $i < count($files('name')); $i++) {
+			$pdf = $parser->parseFile($files('tmp_name')[$i]);
+			$pdfText = $pdf->getText();
+			$pdfText = nl2br($pdfText);
+			$pdfText = str_replace(" ", "", $pdfText);
+			$pdfTextArr = explode("\n", $pdfText);
+			$pdfTextArr = explode(":", $pdfTextArr[3]);
+			return $pdfTextArr[2];
+		}
 	}
 
 	public function tiktokExtractPdf()

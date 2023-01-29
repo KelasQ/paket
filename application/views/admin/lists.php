@@ -152,19 +152,19 @@
                     <div class="tab-pane fade" id="shopee" role="tabpanel">
                         <form action="<?= base_url('invoice/uploads'); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="invoice_store" value="shopee">
-                            <input type="file" name="invoice_file[]" id="input-invoice-shopee" multiple>
+                            <input type="file" name="invoice_file[]" id="input-invoice-shopee" accept="pdf" multiple>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="lazada" role="tabpanel">
                         <form action="<?= base_url('invoice/uploads'); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="invoice_store" value="lazada">
-                            <input type="file" name="invoice_file[]" id="input-invoice-lazada" multiple>
+                            <input type="file" name="invoice_file[]" id="input-invoice-lazada" accept="pdf" multiple>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="tiktok" role="tabpanel">
                         <form action="<?= base_url('invoice/uploads'); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="invoice_store" value="tiktok">
-                            <input type="file" name="invoice_file[]" id="input-invoice-tiktok" multiple>
+                            <input type="file" name="invoice_file[]" id="input-invoice-tiktok" accept="pdf" multiple>
                         </form>
                     </div>
                 </div>

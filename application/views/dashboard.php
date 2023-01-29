@@ -6,7 +6,7 @@
                     <div class="widget-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h6>PAKET <?php echo (int)$paket['checked'][0]->discan + (int)$paket['not_checked'][0]->discan;; ?></h6>
+                                <h6>PAKET <?php echo (int)$paket['checked'][0]->discan + (int)$paket['not_checked'][0]->discan; ?></h6>
                                 <div class="mt-2">
                                     <table class="w-100">
                                         <tr>

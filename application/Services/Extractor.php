@@ -10,12 +10,12 @@ class Extractor
     {
         if ($invoice_store == "tokopedia") {
             return $this->tokopediaExtractPdf($path);
-        } elseif ($invoice_store == "shoppe") {
-            return $this->shopeeExtractPdf();
+        } elseif ($invoice_store == "shopee") {
+            return $this->shopeeExtractPdf($path);
         } elseif ($invoice_store == "lazada") {
-            return $this->lazadaExtractPdf();
+            return $this->lazadaExtractPdf($path);
         } elseif ($invoice_store == "tiktok") {
-            return $this->tiktokExtractPdf();
+            return $this->tiktokExtractPdf($path);
         }
     }
 
@@ -29,15 +29,38 @@ class Extractor
         $pdfTextArr = explode("\n", $pdfText);
 
         if (count($pdfTextArr) > 0) {
-            return $pdfTextArr[0];
+            return $pdfTextArr[2];
         }
         return [];
     }
-    public function shopeeExtractPdf()
+    public function shopeeExtractPdf($path)
     {
+        $parser = new Parser();
+        $pdf = $parser->parseFile($path);
+        $pdfText = $pdf->getText();
+        $pdfText = nl2br($pdfText);
+        $pdfText = str_replace(" ", "", $pdfText);
+        $pdfTextArr = explode("\n", $pdfText);
+
+        if (count($pdfTextArr) > 0) {
+            return $pdfTextArr[8];
+        }
+        return [];
     }
-    public function lazadaExtractPdf()
+    public function lazadaExtractPdf($path)
     {
+        $parser = new Parser();
+        $pdf = $parser->parseFile($path);
+        $pdfText = $pdf->getText();
+        $pdfText = nl2br($pdfText);
+        $pdfText = str_replace(" ", "", $pdfText);
+        $pdfTextArr = explode("\n", $pdfText);
+        $pdfTextArr = explode(":", $pdfTextArr[3]);
+
+        if (count($pdfTextArr) > 0) {
+            return $pdfTextArr[2];
+        }
+        return [];
     }
     public function tiktokExtractPdf()
     {

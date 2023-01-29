@@ -731,35 +731,36 @@
                 }
             });
 
-            // let inputInvoiceLazada = document.querySelector("#input-invoice-lazada");
-            // let fpLazada = FilePond.create(inputInvoiceLazada, {
-            //     server: {
-            //         url: '<?php echo base_url(''); ?>',
-            //         process: {
-            //             url: '/invoice/uploads',
-            //             method: 'POST',
-            //             ondata: (formData) => {
-            //                 formData.append('invoice_store', 'lazada');
-            //                 return formData;
-            //             }
-            //         }
-            //     }
-            // });
+            let inputInvoiceShopee = document.querySelector("#input-invoice-shopee");
+            let fpShopee = FilePond.create(inputInvoiceShopee, {
+                server: {
+                    url: '<?php echo base_url(''); ?>',
+                    process: {
+                        url: '/invoice/uploads',
+                        method: 'POST',
+                        ondata: (formData) => {
+                            formData.append('invoice_store', 'shopee');
+                            return formData;
+                        }
+                    }
+                }
+            });
 
-            // let inputInvoiceShopee = document.querySelector("#input-invoice-shopee");
-            // let fpShopee = FilePond.create(inputInvoiceShopee, {
-            //     server: {
-            //         url: '<?php echo base_url(''); ?>',
-            //         process: {
-            //             url: '/invoice/uploads',
-            //             method: 'POST',
-            //             ondata: (formData) => {
-            //                 formData.append('invoice_store', 'shopee');
-            //                 return formData;
-            //             }
-            //         }
-            //     }
-            // });
+            let inputInvoiceLazada = document.querySelector("#input-invoice-lazada");
+            let fpLazada = FilePond.create(inputInvoiceLazada, {
+                server: {
+                    url: '<?php echo base_url(''); ?>',
+                    process: {
+                        url: '/invoice/uploads',
+                        method: 'POST',
+                        ondata: (formData) => {
+                            formData.append('invoice_store', 'lazada');
+                            return formData;
+                        }
+                    }
+                }
+            });
+
 
             // let inputInvoiceTiktok = document.querySelector("#input-invoice-tiktok");
             // let fpTiktok = FilePond.create(inputInvoiceTiktok, {

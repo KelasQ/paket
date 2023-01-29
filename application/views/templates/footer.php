@@ -839,6 +839,32 @@
                     }
                 })
             }
+
+            $('#btnListHistoryPaket').click(function() {
+                let no_invoice = $(this).data('no_invoice');
+                $('#no_invoice').html(no_invoice);
+                $.ajax({
+                    url: "<?= base_url('timeline/history/'); ?>" + no_invoice,
+                    async: true,
+                    method: 'POST',
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        var html = '';
+                        var count = 1;
+                        var i;
+                        for (i = 0; i < data.length; i++) {
+                            html += '<tr>' +
+                                '<td>' + count++ + '</td>' +
+                                '<td>' + data[i].username + '</td>' +
+                                '<td>' + data[i].keterangan + '</td>' +
+                                '<td>' + data[i].tgl_input + '</td>' +
+                                '</tr>';
+                        }
+                        $('.listHistoriTimeline').html(html);
+                    }
+                });
+            });
         </script>
         </body>
 

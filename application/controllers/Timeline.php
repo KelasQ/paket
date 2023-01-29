@@ -30,19 +30,11 @@ class Timeline extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    // public function getNomorInvoice()
-    // {
-    //     $data = $this->M_crud->getNomorInvoice();
-    //     echo json_encode($data);
-    // }
-
     public function invoices()
     {
         $s = $this->input->get('s');
         $results = $this->db->select('no_invoice')->from('paket')
             ->like('no_invoice', $s)->limit(10);
-
-
         echo json_encode($results->get()->result());
         die();
     }
@@ -135,5 +127,12 @@ class Timeline extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Maaf, Ada Masalah Saat Menyimpan Data Timeline!</div>');
         }
         redirect('timeline');
+    }
+
+    public function history($no_invoice)
+    {
+        $data = $this->M_crud->getHistoryTimeline($no_invoice);
+        echo json_encode($data);
+        die();
     }
 }

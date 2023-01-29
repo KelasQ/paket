@@ -409,4 +409,14 @@ class M_crud extends CI_Model
 	{
 		$this->db->delete('timeline', ['id_timeline' => $id]);
 	}
+
+	public function getHistoryTimeline($no_invoice)
+	{
+		$hasil = $this->db->query("SELECT * FROM `timeline` INNER JOIN `user` ON `timeline`.`id_user` = `user`.`id` WHERE `timeline`.`no_invoice` = '{$no_invoice}'");
+		if ($hasil->num_rows() > 0) {
+			return $hasil->result_array();
+		} else {
+			return array();
+		}
+	}
 }

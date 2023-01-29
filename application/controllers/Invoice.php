@@ -3,11 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use Smalot\PdfParser\Parser;
 
+use App\Services\Extractor;
+
 class Invoice extends CI_Controller
 {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('upload');
 		if (!$this->session->userdata('role') == "4") {
 			$this->session->sess_destroy();
 			redirect(base_url(''));
@@ -216,9 +219,13 @@ class Invoice extends CI_Controller
 		return '';
 	}
 
+
+
 	public function uploads()
 	{
-		$this->load->library('upload');
+
+
+		//error_reporting(0);
 		$this->upload->initialize([
 			'upload_path'   =>  'uploads/',
 			'allowed_types' =>  '*',
@@ -226,37 +233,47 @@ class Invoice extends CI_Controller
 			'file_size' => 30000
 		]);
 
-		$invoice_store = $this->input->post('invoice_store');
-		$this->extractPdf($invoice_store);
 
-		$files = $_FILES['invoice_file'] ?? [];
-		unset($_FILES['invoice_file']);
+		$extractor = new Extractor;
+		$extractor
+			// ->extract($this->input->post('invoice_store'))
+			->upload($this->upload, [
+				'username'      =>  $this->session->userdata('username'),
+				'tanggal'       =>  date('Y-m-d H:i:s'),
+				'gambar'		=>	'',
+				'keterangan'	=>	'is_publish',
+				'stock'			=>	'IN STOCK'
+			]);
 
-		foreach ($files['name'] ?? [] as $key => $file) {
-			$_FILES['invoice_file'] = [
-				'name' => $files['name'][$key],
-				'full_path' => $files['full_path'][$key],
-				'tmp_name' => $files['tmp_name'][$key],
-				'error' => $files['error'][$key],
-				'size' => $files['size'][$key],
-				'type' => $files['type'][$key],
-			];
 
-			if ($this->upload->do_upload('invoice_file')) {
-				$data = [
-					'username'      =>  $this->session->userdata('username'),
-					'tanggal'       =>  date('Y-m-d H:i:s'),
-					'gambar'		=>	'',
-					'keterangan'	=>	'is_publish',
-					'invoice'		=>	$_FILES['invoice_file']['name'],
-					'no_invoice'	=>	'',
-					'stock'			=>	'IN STOCK'
-				];
-				var_dump($data['invoice']);
-				// $this->GlobalModel->add($data);
-			}
-			var_dump($this->upload->display_errors());
-		}
+		// $files = $_FILES['invoice_file'] ?? [];
+		// unset($_FILES['invoice_file']);
+
+		// foreach ($files['name'] ?? [] as $key => $file) {
+		// 	$_FILES['invoice_file'] = [
+		// 		'name' => $files['name'][$key],
+		// 		'full_path' => $files['full_path'][$key],
+		// 		'tmp_name' => $files['tmp_name'][$key],
+		// 		'error' => $files['error'][$key],
+		// 		'size' => $files['size'][$key],
+		// 		'type' => $files['type'][$key],
+		// 	];
+
+		// 	if ($this->upload->do_upload('invoice_file')) {
+		// 		$data = [
+		// 			'username'      =>  $this->session->userdata('username'),
+		// 			'tanggal'       =>  date('Y-m-d H:i:s'),
+		// 			'gambar'		=>	'',
+		// 			'keterangan'	=>	'is_publish',
+		// 			'invoice'		=>	$_FILES['invoice_file']['name'],
+		// 			'no_invoice'	=>	'',
+		// 			'stock'			=>	'IN STOCK'
+		// 		];
+		// 		//var_dump($data['invoice']);
+		// 		// $this->GlobalModel->add($data);
+		// 	}
+		// 	var_dump($this->upload->display_errors());
+		// }
 	}
 
 	public function extractPdf($invoice_store)

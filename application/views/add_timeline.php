@@ -30,9 +30,7 @@ D<div class="main-content">
                         <div class="form-group">
                             <label for="no_invoice">Nomor Invoice</label>
                             <select name="no_invoice" id="no_invoice" class="form-control invoices" required>
-                                <?php foreach ($invoices as $invoice) : ?>
-                                    <option value="<?= $invoice['no_invoice']; ?>"><?= $invoice['no_invoice']; ?></option>
-                                <?php endforeach; ?>
+
                             </select>
                         </div>
                         <div class="form-group">

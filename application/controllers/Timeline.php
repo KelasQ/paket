@@ -36,13 +36,23 @@ class Timeline extends CI_Controller
     //     echo json_encode($data);
     // }
 
+    public function invoices()
+    {
+        $s = $this->input->get('s');
+        $results = $this->db->select('no_invoice')->from('paket')
+            ->like('no_invoice', $s)->limit(10);
+
+
+        echo json_encode($results->get()->result());
+        die();
+    }
+
+
     public function add()
     {
         $data = [
             'title'         =>  'Tambah Data Timeline Barang',
             'parent_active' =>  'timeline',
-            'dataTimeline'  =>  $this->M_crud->getDataTimeline(),
-            'invoices'  =>  $this->M_crud->getNomorInvoice()
         ];
 
         $this->load->view('templates/header', $data);
@@ -119,13 +129,11 @@ class Timeline extends CI_Controller
 
     public function hapus($id)
     {
-        $delete = $this->M_crud->deleteDataTimeline($id);
-        if ($delete) {
+        if ($this->M_crud->deleteDataTimeline($id)) {
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Timeline Berhasil Disimpan.</div>');
-            redirect('timeline');
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Maaf, Ada Masalah Saat Menyimpan Data Timeline!</div>');
-            redirect('timeline');
         }
+        redirect('timeline');
     }
 }

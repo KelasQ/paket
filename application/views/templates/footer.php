@@ -511,7 +511,33 @@
             $(".invoices").select2({
                 width: '100%',
                 placeholder: "Please Select One!",
-                allowClear: true // need to override the changed default
+                allowClear: true, // need to override the changed default,
+                ajax: {
+                    url: '<?php echo base_url('timeline/invoices'); ?>',
+                    data: function(params) {
+                        var query = {
+                            s: params.term,
+                        }
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    processResults: function(data, params) {
+                        let invoices = JSON.parse(data);
+                        let results = [];
+                        invoices.map((invoice, index) => {
+                            results.push({
+                                id: invoice.no_invoice,
+                                text: invoice.no_invoice
+                            })
+                        });
+
+                        console.log(results);
+
+                        return {
+                            results: results
+                        };
+                    }
+                }
             });
         </script>
         <script>
@@ -813,47 +839,6 @@
                     }
                 })
             }
-
-            // setInterval(function() {
-            //     $.ajax({
-            //         url: "<?= base_url('dashboard/cek_user_status'); ?>",
-            //         success: function(data) {
-            //             // console.log(data);
-            //         }
-            //     })
-            // }, 2000)
-
-
-            // $('.btnAddTimeLine').click(function() {
-            //     getNomorInvoice();
-            //     $('#modalTimeLineLabel').html('Tambah Data Timeline');
-            //     $('.modal-footer button[type=submit]').html('Simpan Data Timeline');
-            //     $('.modal-footer button[type=submit]').attr('name', 'btnSimpan');
-            //     $('#id_timeline').val('');
-            //     $('#no_invoice').val('');
-            //     $('#keterangan').val('');
-            // })
-
-            // function getNomorInvoice() {
-            //     $.ajax({
-            //         url: "<?= base_url('timeline/getNomorInvoice'); ?>",
-            //         method: "POST",
-            //         dataType: "json",
-            //         beforeSend: function() {
-            //             $('.invoice_list').attr('disabled', true);
-            //         },
-            //         success: function(data) {
-            //             for (let i = 0; i < data.length; i++) {
-            //                 // setInterval(function() {
-            //                 //     console.log(data[i].no_invoice)
-            //                 // }, 2000)
-            //                 $('.invoice_list').append('<option value="' + data[i].no_invoice + '">' + data[i].no_invoice + '</option>');
-            //             }
-            //         }
-            //     }).complete(function() {
-            //         $('.invoice_list').removeAttr('disabled');
-            //     });
-            // }
         </script>
         </body>
 

@@ -1,0 +1,7 @@
+[11-Oct-2022 14:59:25 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 161716080 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198
+[11-Oct-2022 14:59:56 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 161716080 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198
+[10-Nov-2022 16:16:03 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 163634744 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198
+[10-Nov-2022 16:16:40 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 163634744 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198
+[10-Nov-2022 16:17:00 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 163634744 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198
+[07-Dec-2022 13:17:31 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 176074936 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198
+[07-Jan-2023 16:33:46 Asia/Jakarta] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 185287992 bytes) in /home/csorderweb/public_html/paketkiriman/system/core/Output.php on line 198

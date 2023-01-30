@@ -1,10 +1,8 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Cron extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -12,7 +10,6 @@ class Cron extends CI_Controller
 
     public function check_user_online()
     {
-
         $users = $this->db->select('id, last_aktive')->from('user')->where('is_online', 1)->get()->result();
         $ids = [];
         foreach ($users as $user) {
@@ -31,10 +28,18 @@ class Cron extends CI_Controller
 
     public function checkPaketStatus()
     {
+        $tglUpdateData = date('Y-m-d 23:59:59');
+        $tglBesok = date('Y-m-d 00:00:01', strtotime('+1 days'));
 
-        // kalau sudah jam 12 malam
-        // update status barang
+        if (date('Y-m-d H:i:s') === $tglUpdateData) {
+            $pakets = $this->db->query("SELECT * FROM paket WHERE tanggal < '{$tglBesok}' AND is_publish = 'Draft'");
 
-
+            if ($pakets->num_rows() > 0) {
+                $this->db->where('tanggal' < $tglBesok)->update('paket', [
+                    'is_publish' => 'Publish',
+                    'stock'      => 'IN STOCK'
+                ]);
+            }
+        }
     }
 }

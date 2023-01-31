@@ -42,4 +42,26 @@ class Cron extends CI_Controller
             }
         }
     }
+
+    public function deleteFilesLastSixMonth()
+    {
+        $filePath = base_url('uploads/');
+
+        $date = new DateTime();
+        $interval = new DateInterval('P6M'); //6 months
+        $dateDestination = $date->sub($interval)->format('Y-m') . '%';
+
+        $datas = $this->db->query("SELECT * FROM paket WHERE tanggal LIKE '{$dateDestination}'");
+
+        if ($datas->num_rows() > 0) {
+            foreach ($datas->result() as $row) {
+                if (file_exists($filePath . $row->gambar)) {
+                    unlink($filePath . $row->gambar);
+                    $this->db->where('tanggal', $row->tanggal)->update('paket', ['gambar' => '']);
+                } else {
+                    $this->db->where('tanggal', $row->tanggal)->update('paket', ['gambar' => '']);
+                }
+            }
+        }
+    }
 }

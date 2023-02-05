@@ -15,9 +15,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between row">
+                    <div class="card-header d-flex justify-content-between row mb-3">
+
                         <div class="col-12 col-md-8">
-                            <h3>Paket</h3>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalScan">
+                                    Scan Invoice
+                                </button>
+                            </div>
                         </div>
 
                         <?php if ($this->session->userdata('role') == 1) :  ?>
@@ -243,6 +248,32 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Scan Invoice -->
+<div class="modal fade" id="modalScan" tabindex="-1" role="dialog" aria-labelledby="modalScanLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalScanLabel">Scan Data Invoice</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="camera"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="canva"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(ambilGambar())" class="btn btn-success">Ambil Gambar</a>
+                <button type="button" class="btn btn-primary">Proses</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

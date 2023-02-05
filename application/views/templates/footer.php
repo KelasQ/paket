@@ -4,6 +4,8 @@
         <script>
             window.jQuery || document.write('<script src="<?= base_url(); ?>assets/src/js/vendor/jquery-3.3.1.min.js"><\/script>')
         </script>
+
+        <script src="<?= base_url(); ?>assets/js/webcamjs.js"></script>
         <script src="<?= base_url(); ?>assets/plugins/popper.js/dist/umd/popper.min.js"></script>
         <script src="<?= base_url(); ?>assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="<?= base_url(); ?>assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
@@ -27,12 +29,10 @@
         <script src="<?= base_url(); ?>assets/tesseract.min.js"></script>
         <script src="<?= base_url(); ?>assets/cropper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
         <script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
         <script src="<?= base_url(); ?>assets/OwlCarousel/dist/owl.carousel.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script> -->
         <script src="<?php echo base_url('/assets/dist/js/jquery.lazy.min.js') ?>"></script>
         <script>
             // let dateTime = new Date()
@@ -866,6 +866,20 @@
                     }
                 });
             });
+
+            Webcam.set({
+                width: 320,
+                height: 240,
+                image_format: 'jpg',
+                jpeg_quality: 100
+            });
+            Webcam.attach('#camera');
+
+            function ambilGambar() {
+                Webcam.snap(function(data_uri) {
+                    document.getElementById('canva').innerHTML = '<img src="' + data_uri + '"/>';
+                });
+            }
         </script>
         </body>
 

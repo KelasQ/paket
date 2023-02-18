@@ -763,6 +763,21 @@
                 }
             });
 
+            let inputInvoiceCSOrder = document.querySelector("#input-invoice-cs_order");
+            let fpCSOrder = FilePond.create(inputInvoiceCSOrder, {
+                server: {
+                    url: '<?php echo base_url(''); ?>',
+                    process: {
+                        url: '/invoice/uploads',
+                        method: 'POST',
+                        ondata: (formData) => {
+                            formData.append('invoice_store', 'cs_order');
+                            return formData;
+                        }
+                    }
+                }
+            });
+
 
             // let inputInvoiceTiktok = document.querySelector("#input-invoice-tiktok");
             // let fpTiktok = FilePond.create(inputInvoiceTiktok, {

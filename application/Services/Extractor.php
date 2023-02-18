@@ -17,6 +17,8 @@ class Extractor
             return $this->lazadaExtractPdf($path);
         } elseif ($invoice_store == "tiktok") {
             return $this->tiktokExtractPdf($path);
+        } elseif ($invoice_store == "cs_order") {
+            return $this->CSOrderExtractPdf($path);
         }
     }
 
@@ -63,6 +65,22 @@ class Extractor
         }
         return [];
     }
+
+    public function CSOrderExtractPdf($path)
+    {
+        $parser = new Parser();
+        $pdf = $parser->parseFile($path);
+        $pdfText = $pdf->getText();
+        $pdfText = nl2br($pdfText);
+        $pdfText = str_replace(" ", "", $pdfText);
+        $pdfTextArr = explode("\n", $pdfText);
+
+        if (count($pdfTextArr) > 0) {
+            return $pdfTextArr[7];
+        }
+        return [];
+    }
+
     public function tiktokExtractPdf()
     {
     }

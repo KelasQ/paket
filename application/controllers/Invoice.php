@@ -251,6 +251,8 @@ class Invoice extends CI_Controller
 			return $this->lazadaExtractPdf();
 		} elseif ($invoice_store == "tiktok") {
 			return $this->tiktokExtractPdf();
+		} elseif ($invoice_store == "cs_order") {
+			return $this->CSOrderExtractPdf();
 		}
 	}
 
@@ -300,6 +302,22 @@ class Invoice extends CI_Controller
 			$pdfTextArr = explode("\n", $pdfText);
 			$pdfTextArr = explode(":", $pdfTextArr[3]);
 			return $pdfTextArr[2];
+		}
+	}
+
+	public function CSOrderExtractPdf()
+	{
+		$parser = new Parser();
+
+		$files = $_FILES['invoice_file'] ?? [];
+
+		for ($i = 0; $i < count($files('name')); $i++) {
+			$pdf = $parser->parseFile($files('tmp_name')[$i]);
+			$pdfText = $pdf->getText();
+			$pdfText = nl2br($pdfText);
+			$pdfText = str_replace(" ", "", $pdfText);
+			$pdfTextArr = explode("\n", $pdfText);
+			return $pdfTextArr[7];
 		}
 	}
 

@@ -622,8 +622,8 @@ $(document).ready(function() {
         
         $.ajax({
             method: 'POST',
-            url: 'http://localhost/paket/kasir/updatePublish/' + id,
-            // url: 'https://csorder.web.id/paketkiriman/kasir/updatePublish/' + id,
+            // url: 'http://localhost/paket/kasir/updatePublish/' + id,
+            url: 'https://csorder.web.id/paketkiriman/kasir/updatePublish/' + id,
             data: {
                 publish: publish,
                 no_invoice: no_invoice                     

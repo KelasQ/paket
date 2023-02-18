@@ -138,6 +138,7 @@
                         <a class="nav-item nav-link active" data-toggle="tab" href="#tokopedia">Tokopedia</a>
                         <a class="nav-item nav-link" data-toggle="tab" href="#shopee">Shopee</a>
                         <a class="nav-item nav-link" data-toggle="tab" href="#lazada">Lazada</a>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#cs_order">CS Order</a>
                         <a class="nav-item nav-link" data-toggle="tab" href="#tiktok">Tiktok</a>
                     </div>
                 </nav>
@@ -159,6 +160,12 @@
                         <form action="<?= base_url('invoice/uploads'); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="invoice_store" value="lazada">
                             <input type="file" name="invoice_file[]" id="input-invoice-lazada" accept="pdf" multiple>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="cs_order" role="tabpanel">
+                        <form action="<?= base_url('invoice/uploads'); ?>" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="invoice_store" value="cs_order">
+                            <input type="file" name="invoice_file[]" id="input-invoice-cs_order" accept="pdf" multiple>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="tiktok" role="tabpanel">

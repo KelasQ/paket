@@ -611,20 +611,22 @@ $(document).ready(function() {
         
         let btn = $(this);
         let id = $(this).data('id');
+        let no_invoice = $(this).data('no_invoice');
         let publish = $(this).data('publish');
         
         let tr = btn.parent().parent().parent()
          var d = tableKasir.row( tr ).data();
          
-         console.log( d );
-        
+         console.log( d ); 
+    
         
         $.ajax({
             method: 'POST',
-            //url: "<?php echo base_url('kasir/updatePublish/') ?>" + id,
-            url: 'https://csorder.web.id/paketkiriman/kasir/updatePublish/' + id,
+            url: 'http://localhost/paket/kasir/updatePublish/' + id,
+            // url: 'https://csorder.web.id/paketkiriman/kasir/updatePublish/' + id,
             data: {
-                publish: publish                         
+                publish: publish,
+                no_invoice: no_invoice                     
             },
             success: function( response ) {
                 console.log( response )
@@ -641,6 +643,10 @@ $(document).ready(function() {
                 tableKasir.draw();
             },
             error: function(err) {
+                let response = err.responseJSON;
+                for(let error in response.errors){
+                    alert(response.errors[error])
+                }
                 console.log(err);
             }
         })

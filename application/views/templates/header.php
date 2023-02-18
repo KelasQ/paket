@@ -30,7 +30,7 @@
     <link rel="styleshee" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" href="<?= base_url(); ?>assets/dist/css/theme.min.css">
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/cropper.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/cropper/cropper.min.css">
     <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css" />
     <script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
     <script src="<?= base_url(); ?>assets/src/js/vendor/modernizr-2.8.3.min.js"></script>

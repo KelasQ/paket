@@ -1,19 +1,18 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Kasir extends CI_Controller {
+class Kasir extends CI_Controller
+{
 
-    function __construct(){
-		parent::__construct();
-	
-        if(!$this->session->userdata('role') == "3")
-        {
-        	
+    function __construct()
+    {
+        parent::__construct();
+
+        if (!$this->session->userdata('role') == "3") {
+
             $this->session->sess_destroy();
             redirect(base_url(''));
-
-        
         }
         /**
         if($this->session->userdata('role') != 1)
@@ -43,64 +42,63 @@ class Kasir extends CI_Controller {
 		    
 		}
 		
-		**/
+         **/
 
         $this->load->model('GlobalModel');
         $this->GlobalModel->table('paket');
-        $this->GlobalModel->setPrimaryKey( 'id' );
-
+        $this->GlobalModel->setPrimaryKey('id');
     }
 
-	public function index()
-	{
-		$data['title'] = 'Data Kasir';
-		$data['parent_active'] = 'kasir';
+    public function index()
+    {
+        $data['title'] = 'Data Kasir';
+        $data['parent_active'] = 'kasir';
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('templates/topbar');
-		$this->load->view('templates/sidebar');
-		$this->load->view('kasir/form');
-		$this->load->view('templates/footer');
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/topbar');
+        $this->load->view('templates/sidebar');
+        $this->load->view('kasir/form');
+        $this->load->view('templates/footer');
     }
-    
+
     public function lists()
-	{
-		$data['title'] = 'Data Kasir';
-		$data['parent_active'] = 'kasir';
-		
-		
-		$this->db->where("tanggal BETWEEN '" . $this->input->get('start') . ' 00:00:00' . "' AND '" . $this->input->get('end') . ' 23:59:59' . "' AND gambar != ''");
+    {
+        $data['title'] = 'Data Kasir';
+        $data['parent_active'] = 'kasir';
+
+
+        $this->db->where("tanggal BETWEEN '" . $this->input->get('start') . ' 00:00:00' . "' AND '" . $this->input->get('end') . ' 23:59:59' . "' AND gambar != ''");
         $data['data'] = $this->GlobalModel->findAll();
-        
-        
+
+
 
         //var_dump($data);
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('templates/topbar');
-		$this->load->view('templates/sidebar');
-		$this->load->view('kasir/lists');
-		$this->load->view('templates/footer');
-	}
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/topbar');
+        $this->load->view('templates/sidebar');
+        $this->load->view('kasir/lists');
+        $this->load->view('templates/footer');
+    }
 
 
     public function edit($id)
     {
-		$data['title'] = 'Data Kasir';
-		$data['parent_active'] = 'kasir';
+        $data['title'] = 'Data Kasir';
+        $data['parent_active'] = 'kasir';
         $data['data'] = $this->GlobalModel->find($id);
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('templates/topbar');
-		$this->load->view('templates/sidebar');
-		$this->load->view('kasir/edit');
-		$this->load->view('templates/footer');
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/topbar');
+        $this->load->view('templates/sidebar');
+        $this->load->view('kasir/edit');
+        $this->load->view('templates/footer');
     }
 
-    public function update( $id )
+    public function update($id)
     {
 
-    	$no_invoice = $this->input->post('no_invoice');
+        $no_invoice = $this->input->post('no_invoice');
 
         $data = [
             'keterangan' => $this->input->post('keterangan')
@@ -113,28 +111,54 @@ class Kasir extends CI_Controller {
 
         if ($is_exist->num_rows() > 0) {
 
-        	$this->GlobalModel->update($data, [ 'id' => $id ]);
-
+            $this->GlobalModel->update($data, ['id' => $id]);
         }
 
         echo json_encode($data + [
-        	'redirect'	=>	base_url('kasir/lists?start=' . $this->input->post('start') . '&end=' . $this->input->post('end'))
+            'redirect'    =>    base_url('kasir/lists?start=' . $this->input->post('start') . '&end=' . $this->input->post('end'))
         ]);
 
         die();
-
     }
-    
-    public function updatePublish( $id ) 
+
+    public function updatePublish($id)
     {
-        
-        $publish = $this->input->post( 'publish' );
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules([
+            [
+                'field' => 'no_invoice',
+                'rules' => 'required',
+                'label' => 'No Invoice'
+            ]
+        ]);
+
+        if (!$this->form_validation->run()) {
+            $this->output->set_status_header(400, 'Bad Requeset')
+                ->set_output(json_encode([
+                    'errors' => $this->form_validation->error_array()
+                ]))
+                ->set_content_type('application/json', 'utf-8')
+                ->_display();
+            exit;
+        }
+
+        $publish = $this->input->post('publish');
         $this->GlobalModel->update([
             'is_publish' => $publish
         ], [
             'id' => $id
         ]);
-        
+
+        // Insert Data Timeline
+        $dataTimeline = [
+            'id_user'       =>  $this->session->userdata('id'),
+            'no_invoice'    =>  $this->input->post('no_invoice'),
+            'keterangan'    =>  'Invoice telah discan oleh ' . $this->session->userdata('username'),
+            'tgl_input'     =>  date('Y-m-d H:i:s')
+        ];
+
+        $mCrud = new \App\Models\Timeline;
+        $mCrud->create($dataTimeline);
     }
 
 
@@ -143,19 +167,17 @@ class Kasir extends CI_Controller {
 
         $config['upload_path']          = './uploads/kasir/';
         $config['allowed_types']        = 'gif|jpg|png|pdf';
-        $config['overwrite']			= true;
+        $config['overwrite']            = true;
         $config['max_size']             = 8024; // 1MB
         // $config['max_width']            = 1024;
         // $config['max_height']           = 768;
-    
+
         $this->load->library('upload', $config);
-    
+
         if ($this->upload->do_upload('invoice')) {
             return $this->upload->data("file_name");
         }
-        
-        return '';
 
+        return '';
     }
-  
 }

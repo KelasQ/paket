@@ -27,13 +27,14 @@
         <script src="<?= base_url(); ?>assets/js/form-components.js"></script>
         <script src="<?= base_url(); ?>assets/js/datatables.js"></script>
         <script src="<?= base_url(); ?>assets/tesseract.min.js"></script>
-        <script src="<?= base_url(); ?>assets/cropper.min.js"></script>
+        <script src="<?= base_url(); ?>assets/cropper/cropper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.js"></script>
         <script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
         <script src="<?= base_url(); ?>assets/OwlCarousel/dist/owl.carousel.min.js"></script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script> -->
         <script src="<?php echo base_url('/assets/dist/js/jquery.lazy.min.js') ?>"></script>
+        <script src="https://unpkg.com/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
         <script>
             // let dateTime = new Date()
             // let formatDate = dateTime.toISOString().slice(0, 19).replace("T", " ")
@@ -143,12 +144,15 @@
                         var end = $('#i-end').val();
 
                         var id = $('#i-id').val();
+                        var no_invoice = $('#i-no_invoice').val();
                         var gambar = $('#my_camera')[0].files[0];
                         var username = $('#username').val();
                         var old_gambar = $('#i-old_gambar').val();
                         //var noInvoice   = $('#hasil').val();
                         var paketFormData = new FormData();
 
+                        // paketFormData.append('no_invoice', no_invoice);
+                        paketFormData.append('no_invoice', no_invoice);
                         paketFormData.append('username', username);
                         paketFormData.append('gambar', gambar);
                         paketFormData.append('id', id);
@@ -170,8 +174,6 @@
                                     document.location = obj.redirect;
 
                                     if (res > 0) {
-
-
                                         $('#results').html('');
                                         $('#hasil').val('');
                                         $('#my_camera').val('');
@@ -867,19 +869,50 @@
                 });
             });
 
-            Webcam.set({
-                width: 320,
-                height: 240,
-                image_format: 'jpg',
-                jpeg_quality: 100
-            });
-            Webcam.attach('#camera');
 
-            function ambilGambar() {
-                Webcam.snap(function(data_uri) {
-                    document.getElementById('canva').innerHTML = '<img src="' + data_uri + '"/>';
+            if (document.querySelector("#camera")) {
+                Webcam.set({
+                    width: 320,
+                    height: 240,
+                    image_format: 'jpg',
+                    jpeg_quality: 100
                 });
+                Webcam.attach('#camera');
+
+                async function ambilGambar() {
+                    Webcam.snap(async function(data_uri) {
+
+                        document.getElementById('canva').innerHTML = '<img id="img-canva" src="' + data_uri + '"/>';
+                    });
+                }
+
+                $('.btn-ambil-gambar').click(async function(e) {
+                    e.preventDefault();
+                    let snapImage = await ambilGambar();
+                    console.log('snappImage', snapImage);
+
+                })
+
+                const ExtractText = async (file) => {
+                    let tst = await Tesseract.recognize()
+                }
             }
+
+
+
+            // const image = document.getElementById('img-canva');
+            // const cropper = new Cropper(image, {
+            //     aspectRatio: 16 / 9,
+            //     crop(event) {
+            //         console.log(event.detail.x);
+            //         console.log(event.detail.y);
+            //         console.log(event.detail.width);
+            //         console.log(event.detail.height);
+            //         console.log(event.detail.rotate);
+            //         console.log(event.detail.scaleX);
+            //         console.log(event.detail.scaleY);
+            //     },
+            // });
         </script>
         </body>
 

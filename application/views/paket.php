@@ -271,7 +271,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(ambilGambar())" class="btn btn-success">Ambil Gambar</a>
+                <a href="javascript:void(0)" class="btn btn-success btn-ambil-gambar">Ambil Gambar</a>
                 <button type="button" class="btn btn-primary">Proses</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>

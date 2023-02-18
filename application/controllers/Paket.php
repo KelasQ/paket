@@ -203,13 +203,19 @@ class Paket extends CI_Controller
 		if (!empty($_FILES['gambar']['tmp_name'])) $data['gambar'] = $this->uploadBerkasScan('gambar');
 
 
-
-		//var_dump( $data ); 
-
-		//die();
-
 		$this->db->where('id', (int)$id);
 		$this->db->update('paket', $data);
+
+		// Insert Data Timeline
+		$dataTimeline = [
+			'id_user'       =>  $this->session->userdata('id'),
+			'no_invoice'    =>  $this->input->post('no_invoice'),
+			'keterangan'    =>  'Invoice telah discan oleh ' . $this->session->userdata('username'),
+			'tgl_input'     =>  date('Y-m-d H:i:s')
+		];
+
+		$mCrud = new \App\Models\Timeline;
+		$mCrud->create($dataTimeline);
 
 		$data = $data + [
 			'id' => $id,

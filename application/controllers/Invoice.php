@@ -232,10 +232,11 @@ class Invoice extends CI_Controller
 
 		$extractor = new Extractor;
 		$extractor->upload($this->upload, [
+			'user_id'      =>  $this->session->userdata('id'),
 			'username'      =>  $this->session->userdata('username'),
 			'tanggal'       =>  date('Y-m-d H:i:s'),
 			'gambar'		=>	'',
-			'keterangan'	=>	'is_publish',
+			'keterangan'	=>	'',
 			'stock'			=>	'IN STOCK'
 		]);
 	}

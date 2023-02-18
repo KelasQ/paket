@@ -6,6 +6,7 @@ use Smalot\PdfParser\Parser;
 
 class Extractor
 {
+
     public function extract($path, $invoice_store)
     {
         if ($invoice_store == "tokopedia") {
@@ -109,7 +110,21 @@ class Extractor
 
                 $data['invoice'] = $this->getFile('name');
                 $data['no_invoice'] = $this->extract("{$filepath}{$filename}", $_POST['invoice_store'] ?? '');
+
+                $user_id = $data['user_id'];
+                unset($data['user_id']);
                 $this->save($data);
+
+                // Insert Data Timeline
+                $dataTimeline = [
+                    'id_user'       =>  $user_id,
+                    'no_invoice'    =>  $data['no_invoice'],
+                    'keterangan'    =>  'Invoice telah diupload oleh ' . $data['username'],
+                    'tgl_input'     =>  date('Y-m-d H:i:s')
+                ];
+
+                $mCrud = new \App\Models\Timeline;
+                $mCrud->create($dataTimeline);
             } else {
                 echo $upload->display_errors();
             }
